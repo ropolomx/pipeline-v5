@@ -86,7 +86,7 @@ steps:
 
 # << Get RNA >>
   classify:
-    run: ../../subworkflows/rna_prediction-sub-wf.cwl
+    run: ../subworkflows/rna_prediction-sub-wf.cwl
     in:
       input_sequences: filtered_fasta
       silva_ssu_database: ssu_db
@@ -114,7 +114,7 @@ steps:
 
 # << ITS >>
   ITS:
-    run: ../../subworkflows/ITS/ITS-wf.cwl
+    run: ../subworkflows/ITS/ITS-wf.cwl
     in:
       query_sequences: filtered_fasta
       LSU_coordinates: classify/LSU_coords
