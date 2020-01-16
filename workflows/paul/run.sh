@@ -48,7 +48,7 @@ time cwltoil \
   --retryCount 3 \
   --logFile $LOG_DIR/${NAME_RUN}.log \
   --stats \
-$CWL ${YML} > ${OUT_DIR_FINAL}/out1.json  # 2> $OUT_TOOL_1/run.log
+$CWL ${YML} > ${NUM_RUN}_out.json  # 2> $OUT_TOOL_1/run.log
 
 
 echo " Reminder:
