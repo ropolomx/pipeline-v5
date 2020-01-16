@@ -1,5 +1,5 @@
 filtered_fasta:
-  type: File
+  class: File
   path: /hps/nobackup2/production/metagenomics/results/skin_microbiome_study_SRP002480/SRP0024/SRP002480/SRR3185/SRR3185137/metaspades/001/contigs.fasta
 
 ssu_label: 'SSU_rRNA'
