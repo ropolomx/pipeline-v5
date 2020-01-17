@@ -35,7 +35,7 @@ bgadd -L 200 /${USER}_${JOB_GROUP} > /dev/null
 bgmod -L 200 /${USER}_${JOB_GROUP} > /dev/null
 export TOIL_LSF_ARGS="-q production-rh74 -g /${USER}_${JOB_GROUP}"
 
-mkdir -p $JOB_TOIL_FOLDER $TMPDIR OUT_DIR_FINAL && \
+mkdir -p $JOB_TOIL_FOLDER $TMPDIR $OUT_DIR_FINAL && \
 cd $WORK_DIR && \
 time cwltoil \
   --no-container \
@@ -44,7 +44,7 @@ time cwltoil \
   --defaultMemory $MEMORY \
   --defaultCores $NUM_CORES \
   --jobStore $JOB_TOIL_FOLDER/${NAME_RUN} \
-  --outdir OUT_DIR_FINAL \
+  --outdir $OUT_DIR_FINAL \
   --retryCount 3 \
   --logFile $LOG_DIR/${NAME_RUN}.log \
   --stats \
