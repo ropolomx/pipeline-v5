@@ -153,4 +153,3 @@ steps:
         linkMerge: merge_flattened
       dir_name: { default: 'sequence-categorisation' }
     out: [out]
-

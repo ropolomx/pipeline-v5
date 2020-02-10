@@ -25,10 +25,6 @@ baseCommand: [its-length.py]
 stdout: its_length
 
 outputs:
-    suppressed_tax:
-      type: Directory
-      outputBinding:
-        glob: "taxonomy-summary"
     stdout: stdout
 
 hints:
