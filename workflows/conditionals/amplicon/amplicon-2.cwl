@@ -154,4 +154,3 @@ steps:
       dir_name: { default: 'sequence-categorisation' }
     out: [out]
 
-

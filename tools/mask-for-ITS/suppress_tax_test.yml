@@ -1,0 +1,6 @@
+seq_dir:
+  class: Directory
+  path: sequence-categorisation
+tax_dir:
+  class: Directory
+  path: taxonomy-summary
