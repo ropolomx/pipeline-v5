@@ -57,6 +57,10 @@ outputs:
     type: File[]
     outputSource: gzip_files/compressed_file
 
+  ITS-length:
+    type: File
+    outputSource: suppress_tax/stdout
+
 steps:
 
 # << Get RNA >>
@@ -153,3 +157,11 @@ steps:
         linkMerge: merge_flattened
       dir_name: { default: 'sequence-categorisation' }
     out: [out]
+
+# suppress irrelevant rRNA/ITS tax folders
+  suppress_tax:
+    run: ../../../tools/mask-for-ITS/suppress_tax.cwl
+    in:
+      seq_dir: return_seq_dir/out
+      tax_dir: return_tax_dir/out
+    out: [stdout]
