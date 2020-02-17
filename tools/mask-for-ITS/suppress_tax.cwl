@@ -26,6 +26,15 @@ stdout: its_length
 
 outputs:
     stdout: stdout
+    out_seq_dir:
+      type: Directory
+      outputBinding:
+        glob: sequence-categorisation
+    out_seq_dir:
+       type: Directory
+       outputBinding:
+        glob: taxonomy-summary
+
 
 hints:
   - class: DockerRequirement
