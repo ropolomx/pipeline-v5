@@ -15,26 +15,40 @@ inputs:
       default: "sequence-categorisation"
       inputBinding:
         prefix: --seq-dir
-    tax_dir:
+    lsu_dir:
       type: Directory
-      default: "taxonomy-summary"
+      default: "LSU"
       inputBinding:
-        prefix: --tax-dir
+        prefix: --lsu-dir
+    ssu_dir:
+      type: Directory
+      default: "SSU"
+      inputBinding:
+        prefix: --ssu-dir
+    its_dir:
+      type: Directory
+      default: "its"
+      inputBinding:
+        prefix: --its-dir
+
 
 baseCommand: [its-length.py]
-stdout: its_length
+stdout: ITS_LENGTH
 
 outputs:
     stdout: stdout
-    out_seq_dir:
-      type: Directory
-      outputBinding:
-        glob: sequence-categorisation
-    out_seq_dir:
+    out_lsu:
        type: Directory
        outputBinding:
-        glob: taxonomy-summary
-
+        glob: "*LSU*"
+    out_ssu:
+       type: Directory
+       outputBinding:
+        glob: "*SSU*"
+    out_its:
+       type: Directory
+       outputBinding:
+        glob: "*its"
 
 hints:
   - class: DockerRequirement

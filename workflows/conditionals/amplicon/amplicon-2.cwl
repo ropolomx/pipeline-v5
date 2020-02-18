@@ -133,17 +133,6 @@ steps:
       dir_name: { default: 'its' }
     out: [out]
 
-# return taxonomy-summary
-  return_tax_dir:
-    run: ../../../utils/return_directory.cwl
-    in:
-      dir_list:
-        - rna_prediction/SSU_folder
-        - rna_prediction/LSU_folder
-        - return_its_dir/out
-      dir_name: { default: 'taxonomy-summary' }
-    out: [out]
-
 # return sequence-categorisation:
   return_seq_dir:
     run: ../../../utils/return_directory.cwl
@@ -163,5 +152,18 @@ steps:
     run: ../../../tools/mask-for-ITS/suppress_tax.cwl
     in:
       seq_dir: return_seq_dir/out
-      tax_dir: return_tax_dir/out
-    out: [stdout]
+      lsu_dir: classify/LSU_folder
+      ssu_dir: classify/SSU_folder
+      its_dir: return_its_dir/out
+    out: [stdout, out_lsu, out_ssu, out_its]
+
+# return taxonomy-summary
+  return_tax_dir:
+    run: ../../../utils/return_directory.cwl
+    in:
+      dir_list:
+        - suppress_tax/out_lsu
+        - suppress_tax/out_ssu
+        - suppress_tax/out_its
+      dir_name: { default: 'taxonomy-summary' }
+    out: [out]

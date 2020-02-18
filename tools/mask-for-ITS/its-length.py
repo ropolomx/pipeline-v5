@@ -1,9 +1,11 @@
+#!/usr/bin/env /hps/nobackup2/production/metagenomics/pipeline/tools-v5/miniconda3-4.6.14/bin/python3
 import glob
 import argparse
 import sys
 import os
 from Bio import SeqIO
 import gzip
+import shutil
 
 
 def get_avg_length(input_folder):  # get average length of longest ITS sequences - separated by 'N'
@@ -27,7 +29,7 @@ def get_avg_length(input_folder):  # get average length of longest ITS sequences
 
 def hits_to_num_ratio(rna_type, fasta, input_folder):  # ratio of mapseq hits to number of total seqs LSU/SSU
     rna_sum, rna_num = [0 for _ in range(2)]
-    rna = os.path.join(input_folder, rna_type + '/*.tsv')
+    rna = os.path.join(input_folder, '*.tsv')
     with open(glob.glob(rna)[0], 'r') as rna_hits:
         for line in rna_hits:
             if not line.startswith('#'):
@@ -39,12 +41,12 @@ def hits_to_num_ratio(rna_type, fasta, input_folder):  # ratio of mapseq hits to
         return 0
 
 
-def validate_hits(ssu_fasta, lsu_fasta, input_folder, len_avg):  # check length and ratio and assign tag
+def validate_hits(ssu_fasta, lsu_fasta, ssu_folder, lsu_folder, len_avg):  # check length and ratio and assign tag
     if len_avg > 200:
         return 'ITS'
     elif 120 <= len_avg <= 199:
-        ssu_ratio = hits_to_num_ratio('SSU', ssu_fasta, input_folder)
-        lsu_ratio = hits_to_num_ratio('LSU', lsu_fasta, input_folder)
+        ssu_ratio = hits_to_num_ratio('SSU', ssu_fasta, ssu_folder)
+        lsu_ratio = hits_to_num_ratio('LSU', lsu_fasta, lsu_folder)
         if ssu_ratio or lsu_ratio > 0.1:
             return 'rRNA'
         else:
@@ -53,21 +55,25 @@ def validate_hits(ssu_fasta, lsu_fasta, input_folder, len_avg):  # check length 
         return 'rRNA'
 
 
-def suppress_dir(flag, taxonomy_dir):  # rename dir by tag
-    ssu_folder, lsu_folder, its_folder, new_ssu_folder, new_lsu_folder, new_its_folder = \
-        [os.path.join(taxonomy_dir, x) for x in
-         ['SSU', 'LSU', 'its', 'suppressed_SSU', 'suppressed_LSU', 'suppressed_its']]
+def suppress_dir(flag, lsu, ssu, its):  # rename dir by tag
+    new_ssu_folder, new_lsu_folder, new_its_folder = \
+        [x for x in ['suppressed_SSU', 'suppressed_LSU', 'suppressed_its']]
     if flag == 'ITS':
-        os.rename(lsu_folder, new_lsu_folder)
-        os.rename(ssu_folder, new_ssu_folder)
+        os.rename(lsu, new_lsu_folder)
+        os.rename(ssu, new_ssu_folder)
+        return [os.path.relpath(x) for x in [new_lsu_folder, new_ssu_folder, its]]
     elif flag == 'rRNA':
-        os.rename(its_folder, new_its_folder)
+        os.rename(its, new_its_folder)
+        return [os.path.relpath(x) for x in [lsu, ssu, new_its_folder]]
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="get average length of ITS sequences and suppress unwanted folders")
     parser.add_argument("--seq-dir", dest="seq_directory", help="masked input file")
-    parser.add_argument("--tax-dir", dest="tax_directory", help="directory usually named taxonomy-summary")
+    parser.add_argument("--lsu-dir", dest="lsu_directory", help="directory in path taxonomy-summary/LSU")
+    parser.add_argument("--ssu-dir", dest="ssu_directory", help="directory in path taxonomy-summary/SSU")
+    parser.add_argument("--its-dir", dest="its_directory", help="directory in path taxonomy-summary/its")
+
 
     if len(sys.argv) < 1:
         parser.print_help()
@@ -77,5 +83,6 @@ if __name__ == '__main__':
         print('average ITS length is ' + str(avg))
         ssu_fasta = os.path.join(args.seq_directory, 'SSU.fasta.gz')
         lsu_fasta = os.path.join(args.seq_directory, 'LSU.fasta.gz')
-        suppress_flag = validate_hits(ssu_fasta, lsu_fasta, args.tax_directory, avg)
-        suppress_dir(suppress_flag, args.tax_directory)
+        suppress_flag = validate_hits(ssu_fasta, lsu_fasta, args.ssu_directory, args.lsu_directory, avg)
+        suppress_dir(suppress_flag, args.lsu_directory, args.ssu_directory, args.its_directory)
+
