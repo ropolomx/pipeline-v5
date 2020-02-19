@@ -139,9 +139,9 @@ steps:
     in:
       file_list:
         source:
-          - rna_prediction/compressed_SSU_fasta
-          - rna_prediction/compressed_LSU_fasta
-          - rna_prediction/compressed_rnas
+          - classify/compressed_SSU_fasta
+          - classify/compressed_LSU_fasta
+          - classify/compressed_rnas
           - ITS/masking_file
         linkMerge: merge_flattened
       dir_name: { default: 'sequence-categorisation' }

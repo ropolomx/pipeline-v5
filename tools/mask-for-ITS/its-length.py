@@ -61,9 +61,12 @@ def suppress_dir(flag, lsu, ssu, its):  # rename dir by tag
     if flag == 'ITS':
         os.rename(lsu, new_lsu_folder)
         os.rename(ssu, new_ssu_folder)
+        os.rename(its, 'its')
         return [os.path.relpath(x) for x in [new_lsu_folder, new_ssu_folder, its]]
     elif flag == 'rRNA':
         os.rename(its, new_its_folder)
+        os.rename(lsu, 'LSU')
+        os.rename(ssu, 'SSU')
         return [os.path.relpath(x) for x in [lsu, ssu, new_its_folder]]
 
 
