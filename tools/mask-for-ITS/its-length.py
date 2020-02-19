@@ -22,7 +22,7 @@ def get_avg_length(input_folder):  # get average length of longest ITS sequences
                         longest_seq['num'] = length
                         longest_seq['letters'] = seq
                 all_lengths.append(longest_seq['num'])
-        return sum(all_lengths) / len(all_lengths)
+        return int(sum(all_lengths) / len(all_lengths))
     else:
         return 0
 
