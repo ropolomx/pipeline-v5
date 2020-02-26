@@ -64,7 +64,7 @@ outputs:
 steps:
 
 # << Get RNA >>
-  classify:
+  rna_prediction:
     run: ../../subworkflows/rna_prediction-sub-wf.cwl
     in:
       input_sequences: filtered_fasta
@@ -139,9 +139,9 @@ steps:
     in:
       file_list:
         source:
-          - classify/compressed_SSU_fasta
-          - classify/compressed_LSU_fasta
-          - classify/compressed_rnas
+          - rna_prediction/compressed_SSU_fasta
+          - rna_prediction/compressed_LSU_fasta
+          - rna_prediction/compressed_rnas
           - ITS/masking_file
         linkMerge: merge_flattened
       dir_name: { default: 'sequence-categorisation' }
@@ -152,8 +152,8 @@ steps:
     run: ../../../tools/mask-for-ITS/suppress_tax.cwl
     in:
       seq_dir: return_seq_dir/out
-      lsu_dir: classify/LSU_folder
-      ssu_dir: classify/SSU_folder
+      lsu_dir: rna_prediction/LSU_folder
+      ssu_dir: rna_prediction/SSU_folder
       its_dir: return_its_dir/out
     out: [stdout, out_lsu, out_ssu, out_its]
 
