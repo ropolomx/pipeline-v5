@@ -64,7 +64,7 @@ outputs:
 steps:
 
 # << Get RNA >>
-  rna_prediction:
+  classify:
     run: ../../subworkflows/rna_prediction-sub-wf.cwl
     in:
       input_sequences: filtered_fasta
